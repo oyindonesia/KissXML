@@ -1611,10 +1611,15 @@ static void MarkDeath(void *xmlPtr, DDXMLNode *wrapper);
 				// Create a copy of the namespace, add to node's nsDef list, and then set as attribute's ns
 				xmlNsPtr attrNsCopy = xmlNewNs(NULL, attrNs->href, attrNs->prefix);
 				
-				attrNsCopy->next = node->nsDef;
-				node->nsDef = attrNsCopy;
-				
-				attr->ns = attrNsCopy;
+                if (attrNsCopy != NULL) {
+                    attrNsCopy->next = node->nsDef;
+                    node->nsDef = attrNsCopy;
+                
+                    attr->ns = attrNsCopy;
+                } else {
+                    node->nsDef = NULL;
+                    attr->ns = NULL;
+                }
 			}
 			
 			attrNs = attrNs->next;
